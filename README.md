@@ -12,7 +12,7 @@ Usando tecnologías web, tales como el framework javascript [Angularjs](https://
 * [Gulp](http://gulpjs.com)
 
 ### Instalación aplicación Angular.
-1. Clona el repositorio: `git clone https://github.com/rdash/rdash-angular.git`
+1. Clona el repositorio: `git clone https://github.com/josemlp91/angular-indiclient.git`
 2. Instalar dependencias NodeJS : `sudo npm install`.
 3. Instalar Bower: `bower install`.
 4. Comprobar que se ha instalado gulp correctamente: `gulp –v`
