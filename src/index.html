@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" ng-app="RDash">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Indi-Astronomical-Dashboard</title>
+  <!-- STYLES -->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css">
+  <!-- endbuild -->
+  <!-- SCRIPTS -->
+  <!-- build:js lib/js/main.min.js -->
+  <script type="text/javascript" src="components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+  <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="components/ng-websocket/ng-websocket.js"></script>
+  <!-- endbuild -->
+  <!-- Custom Scripts -->
+  <script type="text/javascript" src="js/dashboard.min.js"></script>
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a ng-click="toggleSidebar()">
+            Indi Dashboard
+            <span class="menu-icon glyphicon glyphicon-transfer"></span>
+          </a>
+        </li>
+        <li class="sidebar-title"><span>CONNECTION</span></li>
+
+        <li class="sidebar-list">
+          <a ng-click="open()">New Connection <span class="menu-icon fa fa-plug"></span></a>
+        </li>
+
+        <li class="sidebar-list">
+          <a href="#">Close Connection <span class="menu-icon fa fa-power-off"></span></a>
+        </li>
+
+        <hr>
+
+          <li class="sidebar-title"><span>DEVICES</span></li>
+        <li class="sidebar-list">
+          <a href="#">CCD Simulator <span class="menu-icon fa fa-camera-retro"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/tables">Filter Wheel <span class="menu-icon fa fa-th-large"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/tables">Telescope <span class="menu-icon fa fa-star"></span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="col-xs-4">
+          <a href="#" target="_blank">
+            Github
+          </a>
+        </div>
+        <div class="col-xs-4">
+          <a href="#" target="_blank">
+            About
+          </a>
+        </div>
+        <div class="col-xs-4">
+          <a href="#">
+            Support
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+        <!-- Header Bar -->
+        <div class="row header">
+          <div class="col-xs-12">
+            <div class="user pull-right">
+              <div class="item dropdown" uib-dropdown>
+                <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
+                  <img src="img/avatar.jpg">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-header">
+                    Joe Bloggs
+                  </li>
+                  <li class="divider"></li>
+                  <li class="link">
+                    <a href="#">
+                      Profile
+                    </a>
+                  </li>
+                  <li class="link">
+                    <a href="#">
+                      Menu Item
+                    </a>
+                  </li>
+                  <li class="link">
+                    <a href="#">
+                      Menu Item
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li class="link">
+                    <a href="#">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="item dropdown" uib-dropdown>
+               <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
+                  <i class="fa fa-bell-o"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-header">
+                    Notifications
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a href="#">Server Down!</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="page">
+                Indi Dashboard
+              </div>
+              <div class="breadcrumb-links">
+                Home
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view></div>
+
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+  </div><!-- End Page Wrapper -->
+
+
+  <!-- Ventana modal nueva conexión -->
+  <script type="text/ng-template" id="open_connection_modal.html">
+      <div class="modal-header">
+          <h3 class="modal-title">New Connection</h3>
+      </div>
+      <div class="modal-body">
+      <form class="form-signin">
+
+         <label for="connection_name" class="sr-only">Email address</label>
+         <input ng-model="connection_name" type="text" class="form-control" placeholder="Connection name" required autofocus>
+         <label for="connection_direction" class="sr-only">Server IP</label>
+         <input ng-model="connection_server_ip" type="text"  class="form-control" placeholder="Server IP" required>
+         <label for="conecction_port" class="sr-only">Server Port</label>
+         <input ng-model="connection_server_port" type="text"  class="form-control" placeholder="Server Port" required>
+
+         <div class="checkbox ">
+           <label>
+             <input type="checkbox" value="autoconect"> Autoconect
+           </label>
+         </div>
+
+         <div class="checkbox ">
+           <label>
+             <input type="checkbox" value="enable_blobs"> Enable BLOBs
+           </label>
+         </div>
+
+      </form>
+
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+          <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      </div>
+  </script>
+  <!-- Fin ventana modal nueva conexión -->
+
+</body>
+</html>
