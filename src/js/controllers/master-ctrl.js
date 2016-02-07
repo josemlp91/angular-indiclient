@@ -121,8 +121,13 @@ function MasterCtrl($scope, $cookieStore, $uibModal, IndiService, $rootScope) {
     IndiService.status();
   }
 
+ // Observamos la variable de mensajes xml y recargamos cuando sea necesario. 
+  $scope.$watch('IndiService.messages', function () {
+      console.log("nuevo mensage");
+       $scope.xml=IndiService.messages;
 
-  $scope.xml=IndiService;
+ });
+
 
   /////////////////////////////////// TEST //////////////////////////////////
   //$scope.indi_connect("localhost", "9999");
