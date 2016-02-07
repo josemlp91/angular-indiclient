@@ -6,9 +6,14 @@ angular.module('RDash')
 
 .controller('ModalNewConecctionCtrl', ['$scope', '$uibModalInstance', ModalNewConecctionCtrl])
 .controller('MasterCtrl', ['$scope', '$cookieStore', '$uibModal','IndiService', MasterCtrl])
-.factory('IndiService', function($websocket) {
+.factory('IndiService', function($websocket,$rootScope) {
 
-  var service = {};
+   var messages = [];
+   var status;
+   var service = { messages: messages, status:status};
+
+
+
 
   // Función de espera del turno para enviar datos.
   var waitForConnection = function (callback, interval) {
@@ -22,6 +27,20 @@ angular.module('RDash')
     }
   };
 
+// Conversion between UTF-8 ArrayBuffer and String
+  var  uintToString = function(uintArray) {
+    var encodedString = String.fromCharCode.apply(null, uintArray),
+       decodedString = decodeURIComponent(escape(encodedString));
+   return decodedString;
+};
+
+var xml2json =function(xml) {
+  var x2js = new X2JS();
+  var json = x2js.xml_str2json( xml );
+  return json;
+};
+
+
 
   service.connect = function(host,port) {
     if(service.ws) { return; }
@@ -29,26 +48,51 @@ angular.module('RDash')
     var ws = new WebSocket("ws://" + host +":" + port, ['binary', 'base64']);
 
     ws.onopen = function() {
+      service.status=true;
       console.log("Succeeded to open a connection");
 
     };
 
     ws.onerror = function() {
+      service.status=false;
       console.log("Failed to open a connection");
 
     }
 
     ws.onmessage = function(message) {
-      console.log(message);
+      var utf8_array;
+      var xml;
+      var json;
+      var fr = new FileReader();
+
+      // Mostramos cuerpo de larespuesta en bruto.
+      console.log((message));
+
+      fr.onload = function (e) {
+        // Convertimos blob en utf8 array
+        utf8_array=(new Uint8Array(e.target.result));
+        // Convertimos utf8 array en string
+        xml=uintToString(utf8_array);
+
+        service.xml=xml;
+
+         service.messages.push(xml);
+        //console.log(xml);
+
+
+      };
+      fr.readAsArrayBuffer(message.data);
     };
 
     service.ws = ws;
 
   }
 
-  service.status=function(){
-    var status=service.ws;
+  service.last_message=function(){
+    console.log(_last_message)
+    return _last_message;
   }
+
 
   service.send = function(message) {
     waitForConnection(function () {
@@ -63,7 +107,7 @@ angular.module('RDash')
 });
 
 
-function MasterCtrl($scope, $cookieStore, $uibModal, IndiService) {
+function MasterCtrl($scope, $cookieStore, $uibModal, IndiService, $rootScope) {
 
   $scope.indi_connect = function(host,port) {
     IndiService.connect(host,port);
@@ -78,9 +122,14 @@ function MasterCtrl($scope, $cookieStore, $uibModal, IndiService) {
   }
 
 
+  $scope.xml=IndiService;
+
   /////////////////////////////////// TEST //////////////////////////////////
-  $scope.indi_connect("localhost", "9999");
-  $scope.indi_init();
+  //$scope.indi_connect("localhost", "9999");
+  //$scope.indi_init();
+  //$scope.xml=IndiService;
+  //console.log(IndiService);
+  //console.log($scope.xml);
   /////////////////////////////////// TEST //////////////////////////////////
 
   var mobileView = 992;

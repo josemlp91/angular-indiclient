@@ -27,7 +27,10 @@
     "angular-ui-router": "^0.2.15",
     "bootstrap": "~3.3.6",
     "font-awesome": "~4.5.0",
-    "angular-websocket": "~1.0.14"
+    "angular-websocket": "~1.0.14",
+    "angular-xml2json": "~0.0.2",
+    "angular-x2js": "~0.2.0",
+    "jquery": "~2.2.0"
   },
   "repository": {
     "type": "git",
